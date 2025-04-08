@@ -37,9 +37,9 @@ public class UserController {
 
         String email = user.getUsername();
         CustomUser dbUser = userService.findByEmail(email);
-//        Client client = dbUser.getClient();
+        Client client = dbUser.getClient();
 
-//        model.addAttribute("clientid", client.getId());
+        model.addAttribute("clientid", client.getId());
         model.addAttribute("email", email); //jstl
         model.addAttribute("roles", user.getAuthorities());
         model.addAttribute("admin", isAdmin(user));
