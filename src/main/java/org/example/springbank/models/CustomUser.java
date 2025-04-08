@@ -15,8 +15,10 @@ public class CustomUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @Column(name = "email")
+
+    @Column(nullable = false, unique = true)
     private String email; //login
+
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -27,42 +29,61 @@ public class CustomUser {
     private Client client;
 
     private String name;
-//    private String email;
     private String phone;
     private String address;
     private String pictureUrl;
 
     public CustomUser(String email, String password, UserRole role, Client client, String name,
                       String phone, String address, String pictureUrl) {
-//        this.login = login;
+        this.email = email;
         this.password = password;
         this.role = role;
-//        this.client = client;
         setClient(client);
-        this.email = email;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.pictureUrl = pictureUrl;
     }
 
-    public static CustomUser create(String email, String name, String pictureUrl) {
-        return new CustomUser(email, null, null, null, name, null, null, pictureUrl);
-    }
-
-    public static CustomUser create(String email, String password, UserRole role, Client client, String name) {
-        return new CustomUser(email, password, role, client, name, null, null, null);
-    }
-
-    public static CustomUser create(String email, String password, UserRole role, Client client, String name,
-                                    String phone, String address) {
-        return new CustomUser(email, password, role, client, name, phone, address, null);
-    }
-
-    public static CustomUser create(String email, String password, UserRole role, Client client, String name,
+    public static CustomUser create(String email, String password, UserRole role,
+                                    Client client, String name,
                                     String phone, String address, String pictureUrl) {
         return new CustomUser(email, password, role, client, name, phone, address, pictureUrl);
     }
+
+    // Упрощенные версии create() можно оставить при желании
+    public static CustomUser create(String email, String name, String pictureUrl) {
+        return create(email, null, null, null, name, null, null, pictureUrl);
+    }
+
+    public static CustomUser create(String email, String password, UserRole role,
+                                    Client client, String name) {
+        return create(email, password, role, client, name, null, null, null);
+    }
+
+    public static CustomUser create(String email, String password, UserRole role,
+                                    Client client, String name,
+                                    String phone, String address) {
+        return create(email, password, role, client, name, phone, address, null);
+    }
+
+//    public static CustomUser create(String email, String name, String pictureUrl) {
+//        return new CustomUser(email, null, null, null, name, null, null, pictureUrl);
+//    }
+//
+//    public static CustomUser create(String email, String password, UserRole role, Client client, String name) {
+//        return new CustomUser(email, password, role, client, name, null, null, null);
+//    }
+//
+//    public static CustomUser create(String email, String password, UserRole role, Client client, String name,
+//                                    String phone, String address) {
+//        return new CustomUser(email, password, role, client, name, phone, address, null);
+//    }
+//
+//    public static CustomUser create(String email, String password, UserRole role, Client client, String name,
+//                                    String phone, String address, String pictureUrl) {
+//        return new CustomUser(email, password, role, client, name, phone, address, pictureUrl);
+//    }
 
     public void setClient(Client client) {
         this.client = client;

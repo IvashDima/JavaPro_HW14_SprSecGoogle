@@ -45,12 +45,11 @@ public class UserService {
                            UserRole role, Client client, //String name, String surname,
                            String name, String phone,
                            String address) {
-        if (userRepository.existsByEmail(email))
+        if (email == null || client == null || userRepository.existsByEmail(email))
             return false;
 
         System.out.println("CLIENT IN USER CREATION!!!"+client);
         CustomUser user = CustomUser.create(email, passHash, role, client, name, phone, address);
-
         userRepository.save(user);
         return true;
     }
