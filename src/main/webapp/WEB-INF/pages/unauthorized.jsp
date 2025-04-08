@@ -14,7 +14,7 @@
 </head>
 <body>
 <div align="center">
-    <h1>Access denied for ${login}!</h1>
+    <h1>Access denied for ${email}!</h1>
 
     <p>Click to logout: <a href="/logout">LOGOUT</a></p>
 </div>

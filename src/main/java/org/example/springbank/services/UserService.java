@@ -24,8 +24,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public CustomUser findByLogin(String login) {
-        return userRepository.findByLogin(login);
+    public CustomUser findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional
@@ -33,7 +33,7 @@ public class UserService {
         ids.forEach(id -> {
             Optional<CustomUser> user = userRepository.findById(id);
             user.ifPresent(u -> {
-                if ( ! DemoDataService.ADMIN_LOGIN.equals(u.getLogin())) {
+                if ( ! DemoDataService.ADMIN_LOGIN.equals(u.getEmail())) {
                     userRepository.deleteById(u.getId());
                 }
             });
@@ -41,42 +41,28 @@ public class UserService {
     }
 
     @Transactional
-    public boolean addUser(String login, String passHash,
+    public boolean addUser(String email, String passHash,
                            UserRole role, Client client, //String name, String surname,
-                           String email, String phone,
+                           String name, String phone,
                            String address) {
-        if (userRepository.existsByLogin(login))
+        if (userRepository.existsByEmail(email))
             return false;
 
-//        Client client = new Client();
-//        client.setName(name);
-//        client.setSurname(surname);
-//        client.setEmail(email);
-//        client.setPhone(phone);
-//
-//        CustomUser user = new CustomUser();
-//        user.setLogin(login);
-//        user.setPassword(passHash);
-//        user.setRole(role);
-//        user.setClient(client);
-//        user.setEmail(email);
-//        user.setPhone(phone);
-//        user.setAddress(address);
-
-//        Client client = new Client(name,surname, email, phone);
-        CustomUser user = new CustomUser(login, passHash, role, client, email, phone, address);
+        System.out.println("CLIENT IN USER CREATION!!!"+client);
+        CustomUser user = CustomUser.create(email, passHash, role, client, name, phone, address);
 
         userRepository.save(user);
         return true;
     }
 
     @Transactional
-    public void updateUser(String login, String email, String phone, String address) {
-        CustomUser user = userRepository.findByLogin(login);
+    public void updateUser(String email, String name, String phone, String address) {
+        CustomUser user = userRepository.findByEmail(email);
         if (user == null)
             return;
 
         user.setEmail(email);
+        user.setName(name);
         user.setPhone(phone);
         user.setAddress(address);
 

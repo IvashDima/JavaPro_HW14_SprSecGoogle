@@ -15,8 +15,8 @@
 <body>
 <div align="center">
     <form action="/j_spring_security_check" method="POST">
-        Login:<br/><input type="text" name="j_login"><br/>
-        Password:<br/><input type="password" name="j_password"><br/>
+        Login:<br/><input type="text" name="j_login" placeholder="Enter email"><br/>
+        Password:<br/><input type="password" name="j_password" placeholder="Enter password"><br/>
         <input type="submit" />
 
         <p><a href="/register">Register new user</a></p>

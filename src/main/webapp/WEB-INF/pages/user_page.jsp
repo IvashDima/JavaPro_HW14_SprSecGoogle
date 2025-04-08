@@ -15,7 +15,7 @@
 <body>
     <div align="center">
         <form action="/update" method="POST">
-            E-mail:<br/><input type="text" name="email" value="${email}" /><br/>
+            E-mail:<br/><input type="text" name="name" value="${name}" /><br/>
             Phone:<br/><input type="text" name="phone" value="${phone}" /><br/>
             Address:<br/><input type="text" name="address" value="${address}" /><br/>
             <input type="submit" value="update"/>

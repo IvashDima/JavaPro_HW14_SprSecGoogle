@@ -23,16 +23,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        CustomUser customUser = userService.findByLogin(login);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        CustomUser customUser = userService.findByEmail(email);
 
         if (customUser == null)
-            throw new UsernameNotFoundException(login + " not found");
+            throw new UsernameNotFoundException(email + " not found");
 
         List<GrantedAuthority> roles = Arrays.asList(
                 new SimpleGrantedAuthority(customUser.getRole().toString())
         );
 
-        return new User(customUser.getLogin(), customUser.getPassword(), roles);
+        return new User(customUser.getEmail(), customUser.getPassword(), roles);
     }
 }

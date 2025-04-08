@@ -8,9 +8,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<CustomUser, Long> {
-    @Query("SELECT u FROM CustomUser u where u.login = :login")
-    CustomUser findByLogin(@Param("login") String login);
+//    @Query("SELECT u FROM CustomUser u where u.login = :login")
+//    CustomUser findByLogin(@Param("login") String login);
+//
+//    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM CustomUser u WHERE u.login = :login")
+//    boolean existsByLogin(@Param("login") String login);
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM CustomUser u WHERE u.login = :login")
-    boolean existsByLogin(@Param("login") String login);
+    @Query("SELECT u FROM CustomUser u where u.email = :email")
+    CustomUser findByEmail(@Param("email") String email);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM CustomUser u WHERE u.email = :email")
+    boolean existsByEmail(@Param("email") String email);
 }

@@ -14,7 +14,7 @@
 </head>
 <body>
 <div align="center">
-    <h1>Your login is: ${login}, your roles are:</h1>
+    <h1>Your login is: ${email}, your roles are:</h1>
     <c:forEach var="s" items="${roles}">
         <h3><c:out value="${s}" /></h3>
     </c:forEach>
@@ -24,7 +24,7 @@
     </c:if>
 
     <form action="/update" method="POST">
-        E-mail:<br/><input type="text" name="email" value="${email}" /><br/>
+        E-mail:<br/><input type="text" name="name" value="${name}" /><br/>
         Phone:<br/><input type="text" name="phone" value="${phone}" /><br/>
         Address:<br/><input type="text" name="address" value="${address}" /><br/>
         <input type="submit" value="Update"/>

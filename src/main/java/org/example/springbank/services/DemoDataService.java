@@ -34,10 +34,11 @@ public class DemoDataService {
         transactionService.deleteAllTransactions();
 
         Client clientadmin = new Client(ADMIN_LOGIN, ADMIN_LOGIN, "1234567", ADMIN_LOGIN + "@test.com");
+        System.out.println("CLIENT IN DEMO!!!"+clientadmin);
         clientService.addClient(clientadmin);
-        userService.addUser(ADMIN_LOGIN,
+        userService.addUser(ADMIN_LOGIN + "@test.com",
                 encoder.encode("password"),
-                UserRole.ADMIN, clientadmin,ADMIN_LOGIN + "@test.com", "1234567", "");
+                UserRole.ADMIN, clientadmin, ADMIN_LOGIN, "1234567", "");
 
         Client client;
         Account account;
@@ -47,9 +48,9 @@ public class DemoDataService {
             client = new Client("Name" + i, "Surname" + i, "1234567" + i, "user" + i + "@test.com");
             clientService.addClient(client);
 
-            userService.addUser("user" + i,
+            userService.addUser("user" + i + "@test.com",
                     encoder.encode("password"),
-                    UserRole.USER, client,"user" + i + "@test.com", "1234567" + i, "");
+                    UserRole.USER, client,"Name" + i, "1234567" + i, "Address" + i);
 
             for (CurrencyType currencyType : CurrencyType.values()){
                 account = new Account(client, 0, currencyType);

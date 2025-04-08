@@ -17,7 +17,11 @@ public class ClientService {
     }
 
     @Transactional
-    public void addClient(Client client){clientRepository.save(client);}
+    public void addClient(Client client){
+        clientRepository.save(client);
+        System.out.println("CLIENT IN ClientService"+clientRepository.findByPattern(client.getName(),null));
+
+    }
 
     @Transactional(readOnly=true)
     public List<Client> findAll(Pageable pageable) {

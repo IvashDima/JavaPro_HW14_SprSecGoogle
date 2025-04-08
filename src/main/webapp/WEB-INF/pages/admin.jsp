@@ -29,7 +29,7 @@
         <c:forEach items="${users}" var="user">
             <tr>
                 <td><input type="checkbox" name="toDelete" value="${user.id}" id="check_${user.id}"></td>
-                <td><c:out value="${user.login}"/></td>
+                <td><c:out value="${user.email}"/></td>
                 <td><c:out value="${user.role}"/></td>
             </tr>
         </c:forEach>

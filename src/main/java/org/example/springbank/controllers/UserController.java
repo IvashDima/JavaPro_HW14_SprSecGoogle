@@ -35,15 +35,15 @@ public class UserController {
     public String index(Model model) {
         User user = getCurrentUser();
 
-        String login = user.getUsername();
-        CustomUser dbUser = userService.findByLogin(login);
-        Client client = dbUser.getClient();
+        String email = user.getUsername();
+        CustomUser dbUser = userService.findByEmail(email);
+//        Client client = dbUser.getClient();
 
-        model.addAttribute("clientid", client.getId());
-        model.addAttribute("login", login);
+//        model.addAttribute("clientid", client.getId());
+        model.addAttribute("email", email); //jstl
         model.addAttribute("roles", user.getAuthorities());
         model.addAttribute("admin", isAdmin(user));
-        model.addAttribute("email", dbUser.getEmail());
+        model.addAttribute("name", dbUser.getName());
         model.addAttribute("phone", dbUser.getPhone());
         model.addAttribute("address", dbUser.getAddress());
 
@@ -51,23 +51,23 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    public String update(@RequestParam(required = false) String email,
+    public String update(@RequestParam(required = false) String name,
                          @RequestParam(required = false) String phone,
                          @RequestParam(required = false) String address) {
         User user = getCurrentUser();
 
-        String login = user.getUsername();
-        userService.updateUser(login, email, phone, address);
+        String email = user.getUsername();
+        userService.updateUser(email, name, phone, address);
 
         return "redirect:/";
     }
 
     @PostMapping(value = "/newuser")
-    public String update(@RequestParam String login,
+    public String update(@RequestParam String email,
                          @RequestParam String password,
                          @RequestParam String name,
                          @RequestParam String surname,
-                         @RequestParam(required = false) String email,
+//                         @RequestParam(required = false) String email,
                          @RequestParam(required = false) String phone,
                          @RequestParam(required = false) String address,
                          Model model) {
@@ -82,9 +82,9 @@ public class UserController {
         client.setEmail(email);
         client.setPhone(phone);
 
-        if ( ! userService.addUser(login, passHash, UserRole.USER, client, email, phone, address)) {
+        if ( ! userService.addUser(email, passHash, UserRole.USER, client, name, phone, address)) {
             model.addAttribute("exists", true);
-            model.addAttribute("login", login);
+            model.addAttribute("email", email);
             return "register";
         }
 
@@ -120,7 +120,7 @@ public class UserController {
     @GetMapping("/unauthorized")
     public String unauthorized(Model model) {
         User user = getCurrentUser();
-        model.addAttribute("login", user.getUsername());
+        model.addAttribute("email", user.getUsername());
         return "unauthorized";
     }
 
