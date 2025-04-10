@@ -4,6 +4,7 @@ import org.example.springbank.dto.CustomUserDTO;
 import org.example.springbank.enums.UserRole;
 import org.example.springbank.models.Client;
 import org.example.springbank.models.CustomUser;
+import org.example.springbank.repositories.ClientRepository;
 import org.example.springbank.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +15,11 @@ import java.util.Optional;
 @Service
 public class UserService implements GeneralService{
     private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ClientRepository clientRepository) {
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Transactional(readOnly = true)
@@ -75,8 +78,20 @@ public class UserService implements GeneralService{
         if (userRepository.existsByEmail(userDTO.getEmail()))
             return; // do nothing
 
-        CustomUser user = CustomUser.fromDTO(userDTO);
-        System.out.println("USER from GOOGLE CREATION (addUser)!!!"+user);
+        Client client = new Client();
+        client.setName(userDTO.getName());
+        client.setEmail(userDTO.getEmail());
+
+        clientRepository.save(client);
+
+        System.out.println("CLIENT from GOOGLE CREATION!!!"+client);
+
+        CustomUser user = CustomUser.create(userDTO.getEmail(), UserRole.USER,
+                client, userDTO.getName(), userDTO.getPictureUrl());
+        user.setClient(client);
+        System.out.println("USER from GOOGLE CREATION!!!"+user);
+
+        client.setUser(user);
 
         userRepository.save(user);
     }
