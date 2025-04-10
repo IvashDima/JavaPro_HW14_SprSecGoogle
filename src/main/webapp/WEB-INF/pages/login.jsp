@@ -29,8 +29,10 @@
             <p>Chao!</p>
         </c:if>
     </form>
-
-    <button type="button" class="btn btn-primary btn-lg" onclick="goToURL('oauth2/authorization/google');">Login via Google</button>
+    <a href="/oauth2/authorization/google">
+        <button>Login via Google</button>
+    </a>
+<%--    <button type="button" class="btn btn-primary btn-lg" onclick="goToURL('oauth2/authorization/google');">Login via Google</button>--%>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

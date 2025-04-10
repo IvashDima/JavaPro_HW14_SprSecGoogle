@@ -71,11 +71,6 @@ public class CustomUser {
         return new CustomUser(email, password, role, client, name, phone, address, pictureUrl);
     }
 
-    // Упрощенные версии create() можно оставить при желании
-    public static CustomUser create(String email, String name, String pictureUrl) {
-        return create(email, null, null, null, name, null, null, pictureUrl);
-    }
-
     public static CustomUser create(String email, String password, UserRole role,
                                     Client client, String name) {
         return create(email, password, role, client, name, null, null, null);
@@ -86,24 +81,6 @@ public class CustomUser {
                                     String phone, String address) {
         return create(email, password, role, client, name, phone, address, null);
     }
-
-//    public static CustomUser create(String email, String name, String pictureUrl) {
-//        return new CustomUser(email, null, null, null, name, null, null, pictureUrl);
-//    }
-//
-//    public static CustomUser create(String email, String password, UserRole role, Client client, String name) {
-//        return new CustomUser(email, password, role, client, name, null, null, null);
-//    }
-//
-//    public static CustomUser create(String email, String password, UserRole role, Client client, String name,
-//                                    String phone, String address) {
-//        return new CustomUser(email, password, role, client, name, phone, address, null);
-//    }
-//
-//    public static CustomUser create(String email, String password, UserRole role, Client client, String name,
-//                                    String phone, String address, String pictureUrl) {
-//        return new CustomUser(email, password, role, client, name, phone, address, pictureUrl);
-//    }
 
     public void setClient(Client client) {
         this.client = client;
