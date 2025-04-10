@@ -47,22 +47,32 @@ public class CustomUser {
         this.pictureUrl = pictureUrl;
     }
 
-    public CustomUser(String email, String name, String pictureUrl) {
+    public CustomUser(String email, UserRole role,
+                      Client client, String name,
+                      String pictureUrl) {
         this.email = email;
+        this.role = role;
+        this.client = client;
         this.name = name;
         this.pictureUrl = pictureUrl;
     }
 
-    public static CustomUser of(String email, String name, String pictureUrl) {
-        return new CustomUser(email, name, pictureUrl);
-    }
+//    public static CustomUser of(String email, String name, String pictureUrl) {
+//        return new CustomUser(email, name, pictureUrl);
+//    }
 
     public CustomUserDTO toDTO() {
         return CustomUserDTO.of(email, name, pictureUrl);
     }
 
-    public static CustomUser fromDTO(CustomUserDTO userDTO) {
-        return CustomUser.of(userDTO.getEmail(), userDTO.getName(), userDTO.getPictureUrl());
+//    public static CustomUser fromDTO(CustomUserDTO userDTO) {
+//        return CustomUser.of(userDTO.getEmail(), userDTO.getName(), userDTO.getPictureUrl());
+//    }
+
+    public static CustomUser create(String email, UserRole role,
+                                    Client client, String name,
+                                    String pictureUrl) {
+        return new CustomUser(email, role, client, name, pictureUrl);
     }
 
     public static CustomUser create(String email, String password, UserRole role,
