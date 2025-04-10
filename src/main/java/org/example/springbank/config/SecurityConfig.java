@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -16,15 +17,23 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler) {
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers("/").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/register","/login", "/js/**", "/css/**")
+                    .permitAll()
             //.antMatchers("/admin").hasRole("ADMIN")
+                .anyRequest()
+                .authenticated()
             .and()
             .exceptionHandling()
                 .accessDeniedPage("/unauthorized")
@@ -37,10 +46,14 @@ public class SecurityConfig {
                 .passwordParameter("j_password")
                 .permitAll()
             .and()
+            .oauth2Login()
+                .loginPage("/login.html")
+                .successHandler(authenticationSuccessHandler)
+            .and()
             .logout()
-                .permitAll()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout");
+                .logoutSuccessUrl("/login?logout")
+                .permitAll();
         return http.build();
     }
 }
