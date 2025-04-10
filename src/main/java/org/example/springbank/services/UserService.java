@@ -1,5 +1,6 @@
 package org.example.springbank.services;
 
+import org.example.springbank.dto.CustomUserDTO;
 import org.example.springbank.enums.UserRole;
 import org.example.springbank.models.Client;
 import org.example.springbank.models.CustomUser;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements GeneralService{
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -48,7 +49,7 @@ public class UserService {
         if (email == null || client == null || userRepository.existsByEmail(email))
             return false;
 
-        System.out.println("CLIENT IN USER CREATION!!!"+client);
+        System.out.println("CLIENT IN USER CREATION (addUser)!!!"+client);
         CustomUser user = CustomUser.create(email, passHash, role, client, name, phone, address);
         userRepository.save(user);
         return true;
@@ -64,6 +65,18 @@ public class UserService {
         user.setName(name);
         user.setPhone(phone);
         user.setAddress(address);
+
+        userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public void addGoogleUser(CustomUserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail()))
+            return; // do nothing
+
+        CustomUser user = CustomUser.fromDTO(userDTO);
+        System.out.println("USER from GOOGLE CREATION (addUser)!!!"+user);
 
         userRepository.save(user);
     }
