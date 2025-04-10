@@ -2,13 +2,13 @@ package org.example.springbank.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.springbank.dto.CustomUserDTO;
 import org.example.springbank.enums.UserRole;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@NoArgsConstructor
 @Table(name = "customusers")
 public class CustomUser {
     @Id
@@ -33,6 +33,8 @@ public class CustomUser {
     private String address;
     private String pictureUrl;
 
+    public CustomUser() {};
+
     public CustomUser(String email, String password, UserRole role, Client client, String name,
                       String phone, String address, String pictureUrl) {
         this.email = email;
@@ -43,6 +45,24 @@ public class CustomUser {
         this.phone = phone;
         this.address = address;
         this.pictureUrl = pictureUrl;
+    }
+
+    public CustomUser(String email, String name, String pictureUrl) {
+        this.email = email;
+        this.name = name;
+        this.pictureUrl = pictureUrl;
+    }
+
+    public static CustomUser of(String email, String name, String pictureUrl) {
+        return new CustomUser(email, name, pictureUrl);
+    }
+
+    public CustomUserDTO toDTO() {
+        return CustomUserDTO.of(email, name, pictureUrl);
+    }
+
+    public static CustomUser fromDTO(CustomUserDTO userDTO) {
+        return CustomUser.of(userDTO.getEmail(), userDTO.getName(), userDTO.getPictureUrl());
     }
 
     public static CustomUser create(String email, String password, UserRole role,
