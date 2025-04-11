@@ -38,7 +38,7 @@ public class DemoDataService {
         clientService.addClient(clientadmin);
         userService.addUser(ADMIN_LOGIN + "@test.com",
                 encoder.encode("password"),
-                UserRole.ADMIN, clientadmin, ADMIN_LOGIN, "1234567", "");
+                UserRole.ADMIN, clientadmin, ADMIN_LOGIN);
 
         Client client;
         Account account;
@@ -50,7 +50,7 @@ public class DemoDataService {
 
             userService.addUser("user" + i + "@test.com",
                     encoder.encode("password"),
-                    UserRole.USER, client,"Name" + i, "1234567" + i, "Address" + i);
+                    UserRole.USER, client,"Name" + i);
 
             for (CurrencyType currencyType : CurrencyType.values()){
                 account = new Account(client, 0, currencyType);
