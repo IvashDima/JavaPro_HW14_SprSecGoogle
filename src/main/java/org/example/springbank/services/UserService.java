@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements GeneralService{
+public class UserService{
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
 
@@ -47,33 +47,29 @@ public class UserService implements GeneralService{
     @Transactional
     public boolean addUser(String email, String passHash,
                            UserRole role, Client client, //String name, String surname,
-                           String name, String phone,
-                           String address) {
+                           String name) {
         if (email == null || client == null || userRepository.existsByEmail(email))
             return false;
 
         System.out.println("CLIENT IN USER CREATION (addUser)!!!"+client);
-        CustomUser user = CustomUser.create(email, passHash, role, client, name, phone, address);
+        CustomUser user = CustomUser.create(email, name, passHash, role, client);
         userRepository.save(user);
         return true;
     }
 
     @Transactional
-    public void updateUser(String email, String name, String phone, String address) {
+    public void updateUser(String email, String name) {
         CustomUser user = userRepository.findByEmail(email);
         if (user == null)
             return;
 
         user.setEmail(email);
         user.setName(name);
-        user.setPhone(phone);
-        user.setAddress(address);
 
         userRepository.save(user);
     }
 
     @Transactional
-    @Override
     public void addGoogleUser(CustomUserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail()))
             return; // do nothing
@@ -86,13 +82,14 @@ public class UserService implements GeneralService{
 
         System.out.println("CLIENT from GOOGLE CREATION!!!"+client);
 
-        CustomUser user = CustomUser.create(userDTO.getEmail(), UserRole.USER,
-                client, userDTO.getName(), userDTO.getPictureUrl());
+        CustomUser user = CustomUser.of(userDTO.getEmail(), userDTO.getName(),
+                UserRole.USER, client,  userDTO.getPictureUrl());
         user.setClient(client);
         System.out.println("USER from GOOGLE CREATION!!!"+user);
 
         client.setUser(user);
 
         userRepository.save(user);
+        System.out.println("User saved to DB: " + user);
     }
 }
