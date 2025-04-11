@@ -1,6 +1,5 @@
 package org.example.springbank.config;
 
-import org.example.springbank.services.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,11 +36,9 @@ public class SecurityConfig {
                 .anyRequest()
                 .authenticated()
             )
-//            .and()
             .exceptionHandling(ex -> ex
                 .accessDeniedPage("/unauthorized")
             )
-//                    .and()
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/j_spring_security_check")
@@ -50,13 +47,11 @@ public class SecurityConfig {
                 .passwordParameter("j_password")
                 .permitAll()
             )
-//            .and()
             .oauth2Login(oauth -> oauth
                     .loginPage("/login")
                     .successHandler(authenticationSuccessHandler)
                     .failureHandler(new SimpleUrlAuthenticationFailureHandler("/login?error"))
             )
-//            .and()
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
