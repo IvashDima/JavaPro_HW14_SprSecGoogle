@@ -36,28 +36,55 @@ public class UserController {
 
     @GetMapping("/")
     public String index(Model model) {
-        User user = getCurrentUser();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
 
-        String email = user.getUsername();
-        CustomUser dbUser = userService.findByEmail(email);
-        if (dbUser == null) throw new UsernameNotFoundException("User not found with email: " + email);
+        if (principal instanceof User) {
+            User user = (User) principal;
+            String email = user.getUsername();
+            CustomUser dbUser = userService.findByEmail(email);
 
-        model.addAttribute("email", email); //jstl
-        model.addAttribute("roles", user.getAuthorities());
-        model.addAttribute("admin", isAdmin(user));
-        model.addAttribute("name", dbUser.getName());
+            if (dbUser != null) {
+                model.addAttribute("email", dbUser.getEmail());
 
-        Client client = dbUser.getClient();
-        if (client == null) throw new IllegalStateException("Client not associated with user: " + email);
+                Client client = dbUser.getClient();
+                if (client != null){
+                    model.addAttribute("clientid", client.getId());
+                } else{
+                    throw new IllegalStateException("Client not associated with user: " + email);
+                }
+            } else {
+                throw new UsernameNotFoundException("User not found with email: " + email);
+            }
 
-        model.addAttribute("clientid", client.getId());
-        model.addAttribute("phone", client.getPhone());
-        model.addAttribute("address", client.getAddress());
+        } else if (principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oAuth2User = (DefaultOidcUser) principal;
+            String email = (String) oAuth2User.getAttributes().get("email");
+            CustomUser dbUser = userService.findByEmail(email);
 
+            List<GrantedAuthority> roles = oAuth2User.getAuthorities().stream()
+                    .filter(authority -> authority.getAuthority().startsWith("ROLE_"))
+                    .collect(Collectors.toList());
+
+            if (dbUser != null) {
+                model.addAttribute("email", dbUser.getEmail());
+
+                Client client = dbUser.getClient();
+                if (client != null){
+                    model.addAttribute("clientid", client.getId());
+                } else{
+                    throw new IllegalStateException("Client not associated with user: " + email);
+                }
+            } else {
+                throw new UsernameNotFoundException("User not found with email: " + email);
+            }
+        } else {
+            throw new IllegalStateException();
+        }
         return "index";
     }
 
-    @GetMapping("/userprofile")
+    @GetMapping("/user_profile")
     public String profile(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -116,20 +143,8 @@ public class UserController {
         } else {
             throw new IllegalStateException();
         }
-        return "userprofile";
+        return "user_profile";
     }
-
-//    @GetMapping("/user")
-//    public CustomUserDTO user(OAuth2AuthenticationToken auth) {
-//        Map<String, Object> attrs = auth.getPrincipal().getAttributes();
-//
-//        String email = (String) attrs.get("email");
-//        String name = (String) attrs.get("name");
-//        System.out.println("LOGGED IN SUCCESS USER: " + name);
-//        String pictureUrl = (String) attrs.get("picture");
-//
-//        return CustomUserDTO.of(email, name, pictureUrl);
-//    }
 
     @PostMapping(value = "/update")
     public String update(@RequestParam(required = false) String name,
