@@ -14,13 +14,27 @@
 </head>
 <body>
     <div align="center">
+        <h1>Your login is: ${email}</h1>
+        <c:forEach var="s" items="${roles}">
+            <h3>Your roles are: <c:out value="${s}" /></h3>
+        </c:forEach>
+
+        <c:if test="${admin}">
+            <p><a href="/admin">Click</a> for admin page</p>
+        </c:if>
+
         <form action="/update" method="POST">
-            E-mail:<br/><input type="text" name="name" value="${name}" /><br/>
+            E-mail:<br/><input type="text" name="email" value="${email}" /><br/>
             Phone:<br/><input type="text" name="phone" value="${phone}" /><br/>
             Address:<br/><input type="text" name="address" value="${address}" /><br/>
             <input type="submit" value="update"/>
-            <%--        <button type="submit" value="update">Submit</button>--%>
         </form>
+
+        <a href="${pageContext.request.contextPath}/account/client/${clientid}">
+            <button type="button">Go to your accounts</button>
+        </a>
+
+        <p>Click to logout: <a href="/logout">LOGOUT</a></p>
     </div>
 </body>
 </html>
