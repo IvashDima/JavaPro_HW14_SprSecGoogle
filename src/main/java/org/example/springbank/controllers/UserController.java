@@ -92,7 +92,6 @@ public class UserController {
                 throw new UsernameNotFoundException("User not found with email: " + email);
             }
 
-
         } else if (principal instanceof DefaultOidcUser) {
             DefaultOidcUser oAuth2User = (DefaultOidcUser) principal;
             String email = (String) oAuth2User.getAttributes().get("email");

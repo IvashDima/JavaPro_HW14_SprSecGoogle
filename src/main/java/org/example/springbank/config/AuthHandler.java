@@ -1,6 +1,8 @@
 package org.example.springbank.config;
 
+import org.apache.catalina.User;
 import org.example.springbank.dto.CustomUserDTO;
+import org.example.springbank.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -16,20 +18,23 @@ import java.util.Map;
 @Component
 public class AuthHandler implements AuthenticationSuccessHandler {
 
-    private final GeneralService generalService;
+    private final UserService userService;
 
-    public AuthHandler(GeneralService generalService) {
-        this.generalService = generalService;
+    public AuthHandler(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException {
+        System.out.println("OAuth2 authentication successful!!!");
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken)authentication;
         OAuth2User user = token.getPrincipal();
 
         Map<String, Object> attributes = user.getAttributes();
+
+        System.out.println("User attributes: " + attributes);
 
         CustomUserDTO userDTO = CustomUserDTO.of(
                 (String) attributes.get("email"),
@@ -37,8 +42,8 @@ public class AuthHandler implements AuthenticationSuccessHandler {
                 (String) attributes.get("picture")
         );
 
-        generalService.addGoogleUser(userDTO);
-
+        userService.addGoogleUser(userDTO);
+        System.out.println("User ADDED!!!");
         httpServletResponse.sendRedirect("/");
     }
 }
