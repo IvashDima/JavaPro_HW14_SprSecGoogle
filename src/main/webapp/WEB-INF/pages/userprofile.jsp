@@ -28,7 +28,6 @@
         Phone:<br/><input type="text" name="phone" value="${phone}" /><br/>
         Address:<br/><input type="text" name="address" value="${address}" /><br/>
         <input type="submit" value="Update"/>
-<%--        <button type="submit">Submit</button>--%>
     </form>
 
     <a href="${pageContext.request.contextPath}/account/client/${clientid}">
