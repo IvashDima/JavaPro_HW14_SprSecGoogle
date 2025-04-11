@@ -1,10 +1,8 @@
 package org.example.springbank.controllers;
 
-import org.example.springbank.dto.CustomUserDTO;
 import org.example.springbank.enums.UserRole;
 import org.example.springbank.models.Client;
 import org.example.springbank.models.CustomUser;
-import org.example.springbank.models.CustomUserPrincipal;
 import org.example.springbank.services.ClientService;
 import org.example.springbank.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,18 +12,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller

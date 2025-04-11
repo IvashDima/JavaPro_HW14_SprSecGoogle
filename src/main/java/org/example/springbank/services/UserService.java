@@ -1,6 +1,7 @@
 package org.example.springbank.services;
 
 import org.example.springbank.dto.CustomUserDTO;
+import org.example.springbank.enums.UserRegisterType;
 import org.example.springbank.enums.UserRole;
 import org.example.springbank.models.Client;
 import org.example.springbank.models.CustomUser;
@@ -52,7 +53,7 @@ public class UserService{
             return false;
 
         System.out.println("CLIENT IN USER CREATION (addUser)!!!"+client);
-        CustomUser user = CustomUser.create(email, name, passHash, role, client);
+        CustomUser user = CustomUser.create(email, name, passHash, role, UserRegisterType.FORM, client);
         userRepository.save(user);
         return true;
     }
@@ -83,7 +84,7 @@ public class UserService{
         System.out.println("CLIENT from GOOGLE CREATION!!!"+client);
 
         CustomUser user = CustomUser.of(userDTO.getEmail(), userDTO.getName(),
-                UserRole.USER, client,  userDTO.getPictureUrl());
+                UserRole.USER, UserRegisterType.GOOGLE, client,  userDTO.getPictureUrl());
         user.setClient(client);
         System.out.println("USER from GOOGLE CREATION!!!"+user);
 

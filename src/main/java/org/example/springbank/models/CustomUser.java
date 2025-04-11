@@ -3,6 +3,7 @@ package org.example.springbank.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.springbank.dto.CustomUserDTO;
+import org.example.springbank.enums.UserRegisterType;
 import org.example.springbank.enums.UserRole;
 
 import javax.persistence.*;
@@ -23,6 +24,8 @@ public class CustomUser {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @Enumerated(EnumType.STRING)
+    private UserRegisterType type;
 
     @OneToOne
     @JoinColumn(name = "client_id", nullable = false, unique = true)
@@ -33,26 +36,28 @@ public class CustomUser {
     public CustomUser() {};
 
     public CustomUser(String email, String name, String password, UserRole role,
-                      Client client) {
+                      UserRegisterType type, Client client) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
+        this.type = type;
         setClient(client);
     }
 
     public CustomUser(String email, String name, UserRole role,
-                      Client client, String pictureUrl) {
+                      UserRegisterType type, Client client, String pictureUrl) {
         this.email = email;
         this.name = name;
         this.role = role;
+        this.type = type;
         setClient(client);
         this.pictureUrl = pictureUrl;
     }
 
     public static CustomUser of(String email, String name, UserRole role,
-                                Client client, String pictureUrl) {
-        return new CustomUser(email, name, role, client, pictureUrl);
+                                UserRegisterType type, Client client, String pictureUrl) {
+        return new CustomUser(email, name, role, type, client, pictureUrl);
     }
     public CustomUserDTO toDTO() {
         return CustomUserDTO.of(email, name, pictureUrl);
@@ -60,12 +65,12 @@ public class CustomUser {
 
     public static CustomUser fromDTO(CustomUserDTO customUserDTO) {
         return CustomUser.of(customUserDTO.getEmail(), customUserDTO.getName(),
-                null, null, customUserDTO.getPictureUrl());
+                null, null, null, customUserDTO.getPictureUrl());
     }
 
     public static CustomUser create(String email, String name, String password, UserRole role,
-                                    Client client) {
-        return new CustomUser(email, name, password, role, client);
+                                    UserRegisterType type, Client client) {
+        return new CustomUser(email, name, password, role,type, client);
     }
 
     public void setClient(Client client) {
