@@ -48,9 +48,10 @@ public class ClientController {
     public String clientAdd(@RequestParam String name,
                             @RequestParam String surname,
                             @RequestParam String phone,
-                            @RequestParam String email)
+                            @RequestParam String email,
+                            @RequestParam String address)
     {
-        Client client = new Client(name, surname, phone, email);
+        Client client = new Client(name, surname, phone, email, address);
         clientService.addClient(client);
 
         return "redirect:/client/";
