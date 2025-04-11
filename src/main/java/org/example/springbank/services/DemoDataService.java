@@ -33,7 +33,7 @@ public class DemoDataService {
         accountService.deleteAllAccounts();
         transactionService.deleteAllTransactions();
 
-        Client clientadmin = new Client(ADMIN_LOGIN, ADMIN_LOGIN, "1234567", ADMIN_LOGIN + "@test.com");
+        Client clientadmin = new Client(ADMIN_LOGIN, ADMIN_LOGIN, "1234567", ADMIN_LOGIN + "@test.com", "address");
         System.out.println("CLIENT IN DEMO!!!"+clientadmin);
         clientService.addClient(clientadmin);
         userService.addUser(ADMIN_LOGIN + "@test.com",
@@ -45,7 +45,7 @@ public class DemoDataService {
         Transaction transaction;
 
         for (int i = 1; i < 3; i++) {
-            client = new Client("Name" + i, "Surname" + i, "1234567" + i, "user" + i + "@test.com");
+            client = new Client("Name" + i, "Surname" + i, "1234567" + i, "user" + i + "@test.com", "address"+i);
             clientService.addClient(client);
 
             userService.addUser("user" + i + "@test.com",
